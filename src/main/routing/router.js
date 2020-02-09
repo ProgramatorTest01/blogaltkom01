@@ -6,7 +6,7 @@ import {
     Link
 } from "react-router-dom";
 import Home from "../home";
-import About from "../about";
+import Author from "../author";
 
 export default function RouterNavigation() {
     return (
@@ -17,7 +17,7 @@ export default function RouterNavigation() {
                         <Link to="/">Home</Link>
                     </li>
                     <li>
-                        <Link to="/about">About</Link>
+                        <Link to="/author">Author</Link>
                     </li>
 
                 </ul>
@@ -28,8 +28,8 @@ export default function RouterNavigation() {
                     <Route exact path="/">
                         <Home/>
                     </Route>
-                    <Route path="/about">
-                        <About/>
+                    <Route path="/author">
+                        <Author/>
                     </Route>
 
 
