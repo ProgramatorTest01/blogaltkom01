@@ -4,13 +4,16 @@ let cors = require('cors');
 let bodyParser = require('body-parser');
 let dbConfig = require('./db/db');
 
+
 const articleRoute = require('./routes/article.route');
+const usersRoute = require('./routes/Users')
 
 mongoose.Promise = global.Promise;
 mongoose.connect(dbConfig.db, {
+    useUnifiedTopology: true,
     useNewUrlParser: true
 }).then(() => {
-    console.log('Connected!')
+    console.log('Connected data!')
 },
     error => {
         console.log('Error during connection attempt: ' + error)
@@ -24,9 +27,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cors());
 app.use('/articles', articleRoute);
+app.use('/users', usersRoute)
+
 
 const port = process.env.PORT || 4000;
-const server = app.listen(port, () => {
+app.listen(port, () => {
     console.log('Connected. Port: ' + port)
 })
 
@@ -41,3 +46,4 @@ app.use((err, req, res, next) => {
     }
     res.status(err.statusCode).send(err.message);
 })
+
