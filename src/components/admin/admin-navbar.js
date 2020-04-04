@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.css";
 
-class Navigation extends Component {
+class NavigationAdmin extends Component {
   logOut(e) {
     e.preventDefault();
     localStorage.removeItem("usertoken");
@@ -16,7 +16,7 @@ class Navigation extends Component {
   render() {
     const loginRegLink = (
       <Nav>
-        <Link to={"/login"} className="nav-link">
+        <Link to={"/admin"} className="nav-link">
           Zaloguj
         </Link>
       </Nav>
@@ -24,11 +24,6 @@ class Navigation extends Component {
 
     const userLink = (
       <div>
-        <Nav>
-          <Link to={"/profile"} className="nav-link">
-            Profil
-          </Link>
-        </Nav>
         <Nav>
           <a href="/" onClick={this.logOut.bind(this)} className="nav-link">
             Wyloguj
@@ -40,38 +35,30 @@ class Navigation extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <Navbar bg="dark" variant="dark">
+          <Navbar bg="lightdark" expand="dark">
             <Container>
               <Navbar.Brand>
                 <Link to={"/"} className="nav-link">
-                  Czytać warto! Blog o książkach i nie tylko...
+                  Czytać warto! Sekcja administratora
                 </Link>
               </Navbar.Brand>
 
               <Nav className="justify-content-end">
                 <Nav>
-                  <Link to={"/"} className="nav-link">
-                    Witaj!
+                  <Link to={"/create-article"} className="nav-link">
+                    Dodaj artykuł
                   </Link>
                 </Nav>
                 <Nav>
-                  <Link to={"/about"} className="nav-link">
-                    O mnie
+                  <Link to={"/article-list"} className="nav-link">
+                    Lista artykułów
                   </Link>
                 </Nav>
                 <Nav>
-                  <Link to={"/articles"} className="nav-link">
-                    Artykuły
-                  </Link>
+                  {localStorage.getItem("usertoken") !== null
+                    ? userLink
+                    : loginRegLink}
                 </Nav>
-                <Nav>
-                  <Link to={"/contact"} className="nav-link">
-                    Kontakt
-                  </Link>
-                </Nav>
-                {localStorage.getItem("usertoken") !== null
-                  ? userLink
-                  : loginRegLink}
               </Nav>
             </Container>
           </Navbar>
@@ -81,4 +68,4 @@ class Navigation extends Component {
   }
 }
 
-export default withRouter(Navigation);
+export default withRouter(NavigationAdmin);

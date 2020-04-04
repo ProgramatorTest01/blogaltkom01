@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Table from "react-bootstrap/Table";
-import ArticleTableRow from "./articleTableRow";
-import NavigationAdmin from "./admin-navbar";
+import ArticleWelcome from "./welcome-articles";
+import Navigation from "./../login/navbar";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
+import "bootstrap/dist/css/bootstrap.css";
 
-export default class ArticleList extends Component {
+export default class ArticlesIntro extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,7 @@ export default class ArticleList extends Component {
 
   dataTable() {
     return this.state.articles.map((res, i) => {
-      return <ArticleTableRow obj={res} key={i} />;
+      return <ArticleWelcome obj={res} key={i} />;
     });
   }
 
@@ -39,22 +39,22 @@ export default class ArticleList extends Component {
         <header className="App-header">
           <Navbar bg="dark" variant="dark">
             <Container>
-              <NavigationAdmin />
+              <Navigation />
             </Container>
           </Navbar>
         </header>
-        <div className="table-wrapper">
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Tytuł</th>
-                <th>Autor</th>
-                <th>Opis</th>
-                <th>Funkcje</th>
-              </tr>
-            </thead>
-            <tbody>{this.dataTable()}</tbody>
-          </Table>
+        <div className="wrapper">
+          <main>
+            <div>
+              <h1>Artykuły - recenzje! Wprowadzenie!</h1>
+            </div>
+            <article>
+              <div>{this.dataTable()}</div>
+            </article>
+          </main>
+          <footer>
+            Artur &amp; Grzegorz 2020. Wszelkie prawa wyłączone :-)
+          </footer>
         </div>
       </div>
     );
