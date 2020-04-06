@@ -1,46 +1,47 @@
-import React, { Component } from 'react'
-import { register } from './userFunction'
+import React, { Component } from "react";
+import { register } from "./userFunction";
 
 class Register extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
-      first_name: '',
-      last_name: '',
-      email: '',
-      password: '',
-      errors: {}
-    }
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      info: ""
+    };
 
-    this.onChange = this.onChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onChange(e) {
-    this.setState({ [e.target.name]: e.target.value })
+    this.setState({ [e.target.name]: e.target.value });
   }
   onSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     const newUser = {
       first_name: this.state.first_name,
       last_name: this.state.last_name,
       email: this.state.email,
       password: this.state.password
-    }
+    };
 
     register(newUser).then(res => {
+      this.setState({
+        info: "Użytkownik został utworzony. Teraz zaloguj się."
+      });
       this.props.history.push(`/login`);
-      
     });
 
-    this.setState  ({
-      first_name: '',
-      last_name: '',
-      email: '',
-      password: ''
-    })
-
+    this.setState({
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: ""
+    });
   }
 
   render() {
@@ -100,13 +101,14 @@ class Register extends Component {
               >
                 Rejestracja
               </button>
-              <p></p>
+              <br></br>
+              <p>{this.state.info}</p>
             </form>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Register
+export default Register;

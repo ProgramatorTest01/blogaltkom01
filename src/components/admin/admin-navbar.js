@@ -24,10 +24,22 @@ class NavigationAdmin extends Component {
 
     const userLink = (
       <div>
-        <Nav>
-          <a href="/" onClick={this.logOut.bind(this)} className="nav-link">
-            Wyloguj
-          </a>
+        <Nav className="justify-content-end">
+          <Nav>
+            <Link to={"/create-article"} className="nav-link">
+              Dodaj artykuł
+            </Link>
+          </Nav>
+          <Nav>
+            <Link to={"/article-list"} className="nav-link">
+              Lista artykułów
+            </Link>
+          </Nav>
+          <Nav>
+            <a href="/" onClick={this.logOut.bind(this)} className="nav-link">
+              Wyloguj
+            </a>
+          </Nav>
         </Nav>
       </div>
     );
@@ -44,16 +56,6 @@ class NavigationAdmin extends Component {
               </Navbar.Brand>
 
               <Nav className="justify-content-end">
-                <Nav>
-                  <Link to={"/create-article"} className="nav-link">
-                    Dodaj artykuł
-                  </Link>
-                </Nav>
-                <Nav>
-                  <Link to={"/article-list"} className="nav-link">
-                    Lista artykułów
-                  </Link>
-                </Nav>
                 <Nav>
                   {localStorage.getItem("usertoken") !== null
                     ? userLink
