@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { login } from "./adminFunction";
+import { formValid } from "./adminFunction";
+import { emailRegex } from "./adminFunction";
 
 class SignIn extends Component {
   constructor() {
@@ -7,7 +9,11 @@ class SignIn extends Component {
     this.state = {
       email: "",
       password: "",
-      errors: {}
+      formErrors: {
+        email: "",
+        password: ""
+      },
+      info: ""
     };
 
     this.onChange = this.onChange.bind(this);
@@ -15,6 +21,24 @@ class SignIn extends Component {
   }
 
   onChange(e) {
+    e.preventDefault();
+    const { name, value } = e.target;
+    let formErrors = { ...this.state.formErrors };
+
+    switch (name) {
+      case "email":
+        formErrors.email = emailRegex.test(value)
+          ? ""
+          : "Wrowadzono błędne dane";
+        break;
+      case "password":
+        formErrors.password = value.length < 5 ? "Wrowadzono błędne dane" : "";
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ formErrors, [name]: value });
     this.setState({ [e.target.name]: e.target.value });
   }
   onSubmit(e) {
@@ -25,21 +49,22 @@ class SignIn extends Component {
       password: this.state.password
     };
 
-    login(user).then(res => {
-      if (res) {
-        this.props.history.push("/article-list");
-      }
-    });
-
-    this.setState({
-      email: "",
-      password: ""
-    });
+    if (formValid(this.state)) {
+      login(user).then(res => {
+        if (res) {
+          this.props.history.push("/article-list");
+        }
+      });
+      this.setState({
+        email: "",
+        password: ""
+      });
+    } else {
+      this.setState({
+        info: "Email lub hasło są błędne. Wprowadź poprawne dane."
+      });
+    }
   }
-
-  // componentDidMount() {
-  //   this.context.history.push('/profile')
-  // };
 
   render() {
     return (
@@ -75,6 +100,8 @@ class SignIn extends Component {
               <button type="submit" className="btn btn-lg btn-info btn-block">
                 Zaloguj
               </button>
+              <br></br>
+              <p className="text-danger">{this.state.info}</p>
             </form>
           </div>
         </div>

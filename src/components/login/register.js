@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { register } from "./userFunction";
+import { formValid } from "./userFunction";
+import { emailRegex } from "./userFunction";
 
 class Register extends Component {
   constructor() {
@@ -9,6 +11,12 @@ class Register extends Component {
       last_name: "",
       email: "",
       password: "",
+      formErrors: {
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: ""
+      },
       info: ""
     };
 
@@ -17,31 +25,57 @@ class Register extends Component {
   }
 
   onChange(e) {
+    e.preventDefault();
+    const { name, value } = e.target;
+    let formErrors = { ...this.state.formErrors };
+
+    switch (name) {
+      case "first_name":
+        formErrors.first_name = value.length < 3 ? "minimum 3 znaki" : "";
+        break;
+      case "last_name":
+        formErrors.last_name = value.length < 3 ? "minimum 3 znaki" : "";
+        break;
+      case "email":
+        formErrors.email = emailRegex.test(value) ? "" : "błędny adres email";
+        break;
+      case "password":
+        formErrors.password = value.length < 5 ? "minimum 5 znaków" : "";
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ formErrors, [name]: value });
     this.setState({ [e.target.name]: e.target.value });
   }
   onSubmit(e) {
     e.preventDefault();
-
     const newUser = {
       first_name: this.state.first_name,
       last_name: this.state.last_name,
       email: this.state.email,
       password: this.state.password
     };
-
-    register(newUser).then(res => {
-      this.setState({
-        info: "Użytkownik został utworzony. Teraz zaloguj się."
+    if (formValid(this.state)) {
+      register(newUser).then(res => {
+        this.setState({
+          info: "Użytkownik został utworzony. Teraz zaloguj się."
+        });
+        this.props.history.push(`/login`);
+        this.setState({
+          first_name: "",
+          last_name: "",
+          email: "",
+          password: ""
+        });
       });
-      this.props.history.push(`/login`);
-    });
-
-    this.setState({
-      first_name: "",
-      last_name: "",
-      email: "",
-      password: ""
-    });
+    } else {
+      this.setState({
+        info:
+          "Formularz rejestracji zawiera puste pola lub błędy. Proszę go poprawić."
+      });
+    }
   }
 
   render() {
@@ -52,48 +86,68 @@ class Register extends Component {
             <form noValidate onSubmit={this.onSubmit}>
               <h1 className="h3 mb-3 font-weight-normal">Zarejestruj się</h1>
               <div className="form-group">
-                <label htmlFor="name">Imię</label>
+                <label htmlFor="name">Imię*</label>
                 <input
                   type="text"
                   className="form-control"
                   name="first_name"
-                  placeholder="Enter your first name"
+                  placeholder="Wpisz swoje imię"
                   value={this.state.first_name}
                   onChange={this.onChange}
                 />
+                {this.state.formErrors.first_name.length > 0 && (
+                  <span className="errorMessage text-danger">
+                    {this.state.formErrors.first_name}
+                  </span>
+                )}
               </div>
               <div className="form-group">
-                <label htmlFor="name">Nazwisko</label>
+                <label htmlFor="name">Nazwisko*</label>
                 <input
                   type="text"
                   className="form-control"
                   name="last_name"
-                  placeholder="Enter your lastname name"
+                  placeholder="Wpisz swoje nazwisko"
                   value={this.state.last_name}
                   onChange={this.onChange}
                 />
+                {this.state.formErrors.last_name.length > 0 && (
+                  <span className="errorMessage text-danger">
+                    {this.state.formErrors.last_name}
+                  </span>
+                )}
               </div>
               <div className="form-group">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">Email*</label>
                 <input
                   type="email"
                   className="form-control"
                   name="email"
-                  placeholder="Enter email"
+                  placeholder="Wpisz email"
                   value={this.state.email}
                   onChange={this.onChange}
                 />
+                {this.state.formErrors.email.length > 0 && (
+                  <span className="errorMessage text-danger">
+                    {this.state.formErrors.email}
+                  </span>
+                )}
               </div>
               <div className="form-group">
-                <label htmlFor="password">Hasło</label>
+                <label htmlFor="password">Hasło*</label>
                 <input
                   type="password"
                   className="form-control"
                   name="password"
-                  placeholder="Password"
+                  placeholder="Wpisz hasło"
                   value={this.state.password}
                   onChange={this.onChange}
                 />
+                {this.state.formErrors.password.length > 0 && (
+                  <span className="errorMessage text-danger">
+                    {this.state.formErrors.password}
+                  </span>
+                )}
               </div>
               <button
                 type="submit"
@@ -102,7 +156,7 @@ class Register extends Component {
                 Rejestracja
               </button>
               <br></br>
-              <p>{this.state.info}</p>
+              <p className="text-danger">{this.state.info}</p>
             </form>
           </div>
         </div>

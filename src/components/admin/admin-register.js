@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { register } from "./adminFunction";
+import { formValid } from "./adminFunction";
+import { emailRegex } from "./adminFunction";
 
 class Register extends Component {
   constructor() {
@@ -9,7 +11,13 @@ class Register extends Component {
       last_name: "",
       email: "",
       password: "",
-      errors: {}
+      formErrors: {
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: ""
+      },
+      info: ""
     };
 
     this.onChange = this.onChange.bind(this);
@@ -17,6 +25,28 @@ class Register extends Component {
   }
 
   onChange(e) {
+    e.preventDefault();
+    const { name, value } = e.target;
+    let formErrors = { ...this.state.formErrors };
+
+    switch (name) {
+      case "first_name":
+        formErrors.first_name = value.length < 3 ? "minimum 3 znaki" : "";
+        break;
+      case "last_name":
+        formErrors.last_name = value.length < 3 ? "minimum 3 znaki" : "";
+        break;
+      case "email":
+        formErrors.email = emailRegex.test(value) ? "" : "błędny adres email";
+        break;
+      case "password":
+        formErrors.password = value.length < 5 ? "minimum 5 znaków" : "";
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ formErrors, [name]: value });
     this.setState({ [e.target.name]: e.target.value });
   }
   onSubmit(e) {
@@ -29,16 +59,25 @@ class Register extends Component {
       password: this.state.password
     };
 
-    register(newUser).then(res => {
-      this.props.history.push("/admin");
-    });
-
-    this.setState({
-      first_name: "",
-      last_name: "",
-      email: "",
-      password: ""
-    });
+    if (formValid(this.state)) {
+      register(newUser).then(res => {
+        this.setState({
+          info: "Administrator został utworzony. Teraz zaloguj się."
+        });
+        this.props.history.push(`/admin`);
+        this.setState({
+          first_name: "",
+          last_name: "",
+          email: "",
+          password: ""
+        });
+      });
+    } else {
+      this.setState({
+        info:
+          "Formularz rejestracji zawiera puste pola lub błędy. Proszę go poprawić."
+      });
+    }
   }
 
   render() {
@@ -60,6 +99,11 @@ class Register extends Component {
                   value={this.state.first_name}
                   onChange={this.onChange}
                 />
+                {this.state.formErrors.first_name.length > 0 && (
+                  <span className="errorMessage text-danger">
+                    {this.state.formErrors.first_name}
+                  </span>
+                )}
               </div>
               <div className="form-group">
                 <label htmlFor="name">Nazwisko</label>
@@ -71,6 +115,11 @@ class Register extends Component {
                   value={this.state.last_name}
                   onChange={this.onChange}
                 />
+                {this.state.formErrors.last_name.length > 0 && (
+                  <span className="errorMessage text-danger">
+                    {this.state.formErrors.last_name}
+                  </span>
+                )}
               </div>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
@@ -82,6 +131,11 @@ class Register extends Component {
                   value={this.state.email}
                   onChange={this.onChange}
                 />
+                {this.state.formErrors.email.length > 0 && (
+                  <span className="errorMessage text-danger">
+                    {this.state.formErrors.email}
+                  </span>
+                )}
               </div>
               <div className="form-group">
                 <label htmlFor="password">Hasło</label>
@@ -93,11 +147,17 @@ class Register extends Component {
                   value={this.state.password}
                   onChange={this.onChange}
                 />
+                {this.state.formErrors.password.length > 0 && (
+                  <span className="errorMessage text-danger">
+                    {this.state.formErrors.password}
+                  </span>
+                )}
               </div>
               <button type="submit" className="btn btn-lg btn-info btn-block">
                 Rejestracja administratora
               </button>
-              <p></p>
+              <br></br>
+              <p className="text-danger">{this.state.info}</p>
             </form>
           </div>
         </div>
