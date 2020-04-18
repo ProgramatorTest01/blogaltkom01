@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -18,21 +17,11 @@ import Contact from "./components/articles/contact";
 import ArticlesIntro from "./components/articles/articles-introduction";
 import AdminLogin from "./components/admin/admin-login";
 
-// import Navigation from './components/login/navbar';
-
 class App extends Component {
   render() {
     return (
       <Router>
         <div className="App">
-          {/* <header className="App-header">
-        <Navbar bg="dark" variant="dark">
-          <Container>
-            <Navigation /> 
-          </Container>
-        </Navbar>
-      </header> */}
-
           <Container>
             <Row>
               <Col md={12}>
