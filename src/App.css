@@ -1,3 +1,21 @@
+body {
+  overflow-y: scroll;
+  margin:auto;
+  text-align: justify;
+}
+
+.container {
+  margin: auto;
+  text-align: justify;
+}
+
+img {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  display: block;
+}
+
 .wrapper {
   padding-top: 30px;
 }
