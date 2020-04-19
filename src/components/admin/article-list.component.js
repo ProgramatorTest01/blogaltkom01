@@ -10,19 +10,19 @@ export default class ArticleList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      articles: []
+      articles: [],
     };
   }
 
   componentDidMount() {
     axios
       .get("http://localhost:4000/articles/")
-      .then(res => {
+      .then((res) => {
         this.setState({
-          articles: res.data
+          articles: res.data,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -50,6 +50,7 @@ export default class ArticleList extends Component {
                 <th>Tytuł</th>
                 <th>Autor</th>
                 <th>Opis</th>
+                <th>Opis skrócony</th>
                 <th>Funkcje</th>
               </tr>
             </thead>

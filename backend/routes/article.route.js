@@ -4,7 +4,16 @@ const router = express.Router();
 let articleSchema = require("../models/Article");
 
 router.route("/create-article").post((req, res, next) => {
-  articleSchema.create(req.body, (error, data) => {
+  const today = new Date();
+  const articleData = {
+    title: req.body.title,
+    author: req.body.author,
+    content: req.body.content,
+    info: req.body.info,
+    created: today,
+  };
+
+  articleSchema.create(articleData, (error, data) => {
     if (error) {
       return next(error);
     } else {
@@ -26,6 +35,17 @@ router.route("/").get((req, res) => {
 });
 
 router.route("/edit-article/:id").get((req, res) => {
+  articleSchema.findById(req.params.id, (error, data) => {
+    if (error) {
+      console.log(error);
+      res.json("");
+    } else {
+      res.json(data);
+    }
+  });
+});
+
+router.route("/one-article/:id").get((req, res) => {
   articleSchema.findById(req.params.id, (error, data) => {
     if (error) {
       console.log(error);
@@ -58,7 +78,7 @@ router.route("/delete-article/:id").delete((req, res, next) => {
       return next(error);
     } else {
       res.status(200).json({
-        msg: data
+        msg: data,
       });
     }
   });

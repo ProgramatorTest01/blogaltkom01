@@ -14,6 +14,7 @@ import Login from "./components/login/login";
 import Profile from "./components/login/profile";
 import Welcome from "./components/articles/welcome";
 import Contact from "./components/articles/contact";
+import ArticleFull from "./components/articles/article-full";
 import ArticlesIntro from "./components/articles/articles-introduction";
 import AdminLogin from "./components/admin/admin-login";
 
@@ -31,6 +32,7 @@ class App extends Component {
                     <Route path="/about" component={About} />
                     <Route path="/create-article" component={CreateArticle} />
                     <Route path="/edit-article/:id" component={EditArticle} />
+                    <Route path="/one-article/:id" component={ArticleFull} />
                     <Route path="/article-list" component={ArticleList} />
                     <Route path="/login" component={Login} />
                     <Route path="/profile" component={Profile} />

@@ -4,21 +4,27 @@ const schema = mongoose.Schema;
 let articleSchema = new schema(
   {
     title: {
-      type: String
+      type: String,
     },
     author: {
-      type: String
+      type: String,
     },
     content: {
-      type: String
+      type: String,
+    },
+    info: {
+      type: String,
+    },
+    picture: {
+      type: String,
     },
     created: {
       type: Date,
-      required: Date.now
-    }
+      required: Date.now,
+    },
   },
   {
-    collection: "articles"
+    collection: "articles",
   }
 );
 

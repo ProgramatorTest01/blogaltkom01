@@ -10,27 +10,35 @@ export default class Welcome extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      articles: []
+      articles: [],
     };
   }
 
   componentDidMount() {
     axios
       .get("http://localhost:4000/articles/")
-      .then(res => {
+      .then((res) => {
         this.setState({
-          articles: res.data
+          articles: res.data,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
 
   dataTable() {
-    return this.state.articles.map((res, i) => {
-      return <ArticleWelcome obj={res} key={i} />;
-    });
+    let article1 = { ...this.state.articles.reverse()[0] };
+    let article2 = { ...this.state.articles.reverse()[1] };
+    let article3 = { ...this.state.articles.reverse()[2] };
+
+    return (
+      <React.Fragment>
+        <ArticleWelcome obj={article1} />
+        <ArticleWelcome obj={article2} />
+        <ArticleWelcome obj={article3} />
+      </React.Fragment>
+    );
   }
 
   render() {

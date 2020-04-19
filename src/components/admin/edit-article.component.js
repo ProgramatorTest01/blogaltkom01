@@ -13,12 +13,14 @@ export default class EditArticle extends Component {
     this.onChangeArticleTitle = this.onChangeArticleTitle.bind(this);
     this.onChangeArticleAuthor = this.onChangeArticleAuthor.bind(this);
     this.onChangeArticleContent = this.onChangeArticleContent.bind(this);
+    this.onChangeArticleInfo = this.onChangeArticleInfo.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       title: "",
       author: "",
-      content: ""
+      content: "",
+      info: "",
     };
   }
 
@@ -34,20 +36,25 @@ export default class EditArticle extends Component {
     this.setState({ content: e.target.value });
   }
 
+  onChangeArticleInfo(e) {
+    this.setState({ info: e.target.value });
+  }
+
   componentDidMount() {
     axios
       .get(
         "http://localhost:4000/articles/edit-article/" +
           this.props.match.params.id
       )
-      .then(res => {
+      .then((res) => {
         this.setState({
           title: res.data.title,
           author: res.data.author,
-          content: res.data.content
+          content: res.data.content,
+          info: res.data.info,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -58,7 +65,8 @@ export default class EditArticle extends Component {
     const article = {
       title: this.state.title,
       author: this.state.author,
-      content: this.state.content
+      content: this.state.content,
+      info: this.state.info,
     };
 
     axios
@@ -67,11 +75,11 @@ export default class EditArticle extends Component {
           this.props.match.params.id,
         article
       )
-      .then(res => {
+      .then((res) => {
         console.log(res.data);
         console.log("Updated!");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
@@ -114,6 +122,15 @@ export default class EditArticle extends Component {
                 type="text"
                 value={this.state.content}
                 onChange={this.onChangeArticleContent}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="Info">
+              <Form.Label>Opis skrócony</Form.Label>
+              <Form.Control
+                type="text"
+                value={this.state.info}
+                onChange={this.onChangeArticleInfo}
               />
             </Form.Group>
 

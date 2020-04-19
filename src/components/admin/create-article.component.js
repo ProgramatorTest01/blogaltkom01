@@ -13,12 +13,14 @@ export default class CreateArticle extends Component {
     this.onChangeArticleTitle = this.onChangeArticleTitle.bind(this);
     this.onChangeArticleAuthor = this.onChangeArticleAuthor.bind(this);
     this.onChangeArticleContent = this.onChangeArticleContent.bind(this);
+    this.onChangeArticleInfo = this.onChangeArticleInfo.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       title: "",
       author: "",
-      content: ""
+      content: "",
+      info: "",
     };
   }
 
@@ -34,23 +36,29 @@ export default class CreateArticle extends Component {
     this.setState({ content: e.target.value });
   }
 
+  onChangeArticleInfo(e) {
+    this.setState({ info: e.target.value });
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
     const article = {
       title: this.state.title,
       author: this.state.author,
-      content: this.state.content
+      content: this.state.content,
+      info: this.state.info,
     };
 
     axios
       .post("http://localhost:4000/articles/create-article", article)
-      .then(res => console.log(res.data));
+      .then((res) => console.log(res.data));
 
     this.setState({
       title: "",
       author: "",
-      content: ""
+      content: "",
+      info: "",
     });
   }
 
@@ -90,6 +98,15 @@ export default class CreateArticle extends Component {
                 type="text"
                 value={this.state.content}
                 onChange={this.onChangeArticleContent}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="Info">
+              <Form.Label>Opis skrócony</Form.Label>
+              <Form.Control
+                type="text"
+                value={this.state.info}
+                onChange={this.onChangeArticleInfo}
               />
             </Form.Group>
 

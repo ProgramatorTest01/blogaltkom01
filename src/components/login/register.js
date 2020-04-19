@@ -15,9 +15,9 @@ class Register extends Component {
         first_name: "",
         last_name: "",
         email: "",
-        password: ""
+        password: "",
       },
-      info: ""
+      info: "",
     };
 
     this.onChange = this.onChange.bind(this);
@@ -31,10 +31,10 @@ class Register extends Component {
 
     switch (name) {
       case "first_name":
-        formErrors.first_name = value.length < 3 ? "minimum 3 znaki" : "";
+        formErrors.first_name = value.length < 2 ? "minimum 2 znaki" : "";
         break;
       case "last_name":
-        formErrors.last_name = value.length < 3 ? "minimum 3 znaki" : "";
+        formErrors.last_name = value.length < 2 ? "minimum 2 znaki" : "";
         break;
       case "email":
         formErrors.email = emailRegex.test(value) ? "" : "błędny adres email";
@@ -55,25 +55,25 @@ class Register extends Component {
       first_name: this.state.first_name,
       last_name: this.state.last_name,
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
     };
     if (formValid(this.state)) {
-      register(newUser).then(res => {
+      register(newUser).then((res) => {
         this.setState({
-          info: "Użytkownik został utworzony. Teraz zaloguj się."
+          info: "Użytkownik został utworzony. Teraz zaloguj się.",
         });
         this.props.history.push(`/login`);
         this.setState({
           first_name: "",
           last_name: "",
           email: "",
-          password: ""
+          password: "",
         });
       });
     } else {
       this.setState({
         info:
-          "Formularz rejestracji zawiera puste pola lub błędy. Proszę go poprawić."
+          "Formularz rejestracji zawiera puste pola lub błędy. Proszę go poprawić.",
       });
     }
   }
